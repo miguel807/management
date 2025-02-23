@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:alpine3.18
+    container_name: postgres
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: management
+    ports:
+      - "5432:5432"
+   
+
+  adminer:
+    image: adminer:standalone
+    container_name: adminers
+    ports:
+      - "7000:8080"
