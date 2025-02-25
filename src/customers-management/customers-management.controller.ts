@@ -63,6 +63,8 @@ export class CustomersManagementController {
     return this.customersManagementService.removeCustomer(id);
   }
 
+
+
   //!! Services
   @UseGuards(AuthGuard)
   @Post('services')
@@ -92,7 +94,7 @@ export class CustomersManagementController {
   }
 
 
-  /*
+  
   @Patch('services/:id')
   @ApiOperation({ summary: 'Update a service by ID' })
   @ApiParam({ name: 'id', description: 'Service ID' })
@@ -102,7 +104,7 @@ export class CustomersManagementController {
   updateService(@Param('id') id: string, @Body() updateServiceDto: UpdateServiceDto) {
     return this.customersManagementService.updateService(id, updateServiceDto);
   }
-*/
+
 
   @UseGuards(AuthGuard)
   @Delete('services/:id')
@@ -113,4 +115,22 @@ export class CustomersManagementController {
   removeService(@Param('id') id: string) {
     return this.customersManagementService.removeService(id);
   }
+
+
+  //!! reports
+  @UseGuards(AuthGuard)
+  @Get('summary')
+  @ApiOperation({ summary: 'Retrieve service summary grouped by name' })
+  @ApiResponse({ status: 200, description: 'Service summary retrieved successfully.' })
+  getServiceSummary() {
+    return this.customersManagementService.getServiceSummary();
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('summary-by-month')
+  @ApiOperation({ summary: 'Retrieve service summary grouped by month and type' })
+  @ApiResponse({ status: 200, description: 'Service summary by month retrieved successfully.' })
+  getServiceSummaryByMonth() {
+    return this.customersManagementService.getServiceSummaryByMonth();
+  } 
 }

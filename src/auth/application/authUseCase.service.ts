@@ -21,7 +21,7 @@ export class AuthService {
                 }
               
                 const payload = { username: user.username, role: "admin", id: user.id };
-                const accessToken = this.jwtService.sign(payload, { expiresIn: "15m" });
+                const accessToken = this.jwtService.sign(payload, { expiresIn: "60m" });
                 const refreshToken = this.jwtService.sign(payload, { expiresIn: "7d" });
               
                 
@@ -62,7 +62,7 @@ export class AuthService {
               
                   const newAccessToken = this.jwtService.sign(
                     { username: decoded.username, role: "admin", id: decoded.id },
-                    { expiresIn: "15m" }
+                    { expiresIn: "60m" }
                   );
               
                   return { access_token: newAccessToken };

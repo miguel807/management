@@ -31,7 +31,8 @@ export class CustomersManagementService {
   }
 
   async removeCustomer(id: string) {
-    return this.prisma.customer.delete({ where: { id } });
+    await this.prisma.service.deleteMany({ where: { customerId: id } });
+    return this.prisma.customer.delete({ where: { id } }); 
   }
 
 
@@ -45,9 +46,11 @@ export class CustomersManagementService {
       endDate: service.endDate ? new Date(service.endDate) : null,
     }));
   
-    return this.prisma.service.createMany({
+    const a= this.prisma.service.createMany({
       data: formattedData,
     });
+     console.log(a)
+    return a
   }
   async findAllServices() {
     return this.prisma.service.findMany({ include: { customer: true } });
@@ -59,12 +62,48 @@ export class CustomersManagementService {
     return service;
   }
 
-  /*
+  
   async updateService(id: string, data: UpdateServiceDto) {
     return this.prisma.service.update({ where: { id }, data });
   }
-*/
+
   async removeService(id: string) {
     return this.prisma.service.delete({ where: { id } });
   }
+
+  async getServiceSummary() {
+    return this.prisma.service.groupBy({
+      by: ['name'],
+      _sum: {
+        priceUSD: true,
+        priceCUP: true
+      }
+    });
+  }
+
+  async getServiceSummaryByMonth() {
+    const services = await this.prisma.service.findMany({
+      select: {
+        name: true,
+        priceCUP: true,
+        priceUSD: true,
+        startDate: true
+      }
+    });
+  
+    return services.reduce((acc, service) => {
+      const month = service.startDate.toISOString().slice(0, 7); 
+      const key = `${month}-${service.name}`;
+  
+      if (!acc[key]) {
+        acc[key] = { month, type: service.name, total_price_usd: 0, total_price_cup: 0 };
+      }
+  
+      acc[key].total_price_usd += service.priceUSD;
+      acc[key].total_price_cup += service.priceCUP;
+  
+      return acc;
+    }, {});
+  }
+  
 }

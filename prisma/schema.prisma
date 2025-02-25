@@ -40,6 +40,7 @@ model Customer {
   registeredBy  User?     @relation(fields: [registeredById], references: [id])
   registeredById String?  
   services      Service[]
+  read          Boolean @default(false)
 }
 
 model Service {

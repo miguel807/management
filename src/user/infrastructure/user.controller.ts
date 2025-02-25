@@ -42,6 +42,15 @@ export class UserController {
     return this.userService.findOneById(id);
   }
 
+  @Get('findOneByName/:username')
+  @ApiOperation({ summary: 'Find a user by its ID' })
+  @ApiParam({ name: 'username', description: 'username of the user to find', type: String })
+  @ApiResponse({ status: 200, description: 'User found successfully.' })
+  @ApiResponse({ status: 404, description: 'User not found.' })
+  findOneByUserName(@Param('username') username: string) {
+    return this.userService.findOneByUserName(username);
+  }
+
 
   @Patch(':id')
   @ApiOperation({ summary: 'Update a user by id' })

@@ -28,6 +28,11 @@ export class CreateCustomerDto {
     @IsOptional()
     @IsBoolean()
     paid?: boolean;
+
+    @ApiProperty()
+    @IsOptional()
+    @IsBoolean()
+    read?: boolean;
   
     @ApiProperty()
     @IsUUID()
